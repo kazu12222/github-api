@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <title>vueを使ってaxiosを学ぶ</title>
+  </head>
+
+  <body>
+    <div id="app">
+      <div class="gitdata">
+        <input
+          type="text"
+          :value="reposName"
+          @change="onChange"
+          placeholder="User Name"
+        />
+        <button @click="search_git">検索</button>
+
+        <ul v-for="userData in userDatas" @change="onChange">
+          <li>{{userData.name}}</li>
+        </ul>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/vue@next"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <!--axios import-->
+
+    <script>
+      Vue.createApp({
+        el: "#app",
+        name: "GitData",
+        props: {
+          reposName: "kazu12222",
+        },
+        data() {
+          return {
+            userDatas: [],
+            user: "kazu12222",
+          };
+        },
+        methods: {
+          search_git: function () {
+            this.user = user;
+            const request = axios.create({
+              baseURL: "https://api.github.com",
+            });
+            request
+              .get(
+                `/users/${this.user}/repos` // api key は　gitにあげない！.envなどで管理
+              )
+              .then((res) => {
+                this.userDatas = res.data;
+                console.log(res);
+                console.log(this.user);
+              });
+          },
+        },
+      });
+    </script>
+  </body>
+</html>
