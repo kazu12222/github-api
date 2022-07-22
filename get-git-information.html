@@ -8,16 +8,10 @@
   <body>
     <div id="app">
       <div class="gitdata">
-        <input
-          type="text"
-          :value="user"
-          @change="onChange"
-          placeholder="User Name"
-        />
-        <ul>
-          <ul v-for="userData in userDatas">
-            <li>{{userData.name}}</li>
-          </ul>
+        <input type="text" v-model="user" placeholder="User Name" />
+        <button @click="search_video">検索</button>
+        <ul v-for="userData in userDatas">
+          <li>{{userData.name}}</li>
         </ul>
       </div>
     </div>
@@ -37,21 +31,33 @@
           return {
             userDatas: [],
             user: "kazu12222",
+            q: "",
           };
         },
-        created() {
-          const request = axios.create({
-            baseURL: "https://api.github.com",
-          });
-          request
-            .get(
-              `/users/${this.user}/repos` // api key は　gitにあげない！.envなどで管理
-            )
-            .then((res) => {
+        //   created() {
+        //     this.q = this.user;
+        //     const request = axios.create({
+        //       baseURL: "https://api.github.com",
+        //     });
+        //     request.get(`/users/${this.q}/repos`).then((res) => {
+        //       this.userDatas = res.data;
+        //       console.log(res);
+        //       console.log(this.q);
+        //     });
+        //   },
+        // }).mount("#app");
+        methods: {
+          search_video: function () {
+            this.q = this.user;
+            const request = axios.create({
+              baseURL: "https://api.github.com",
+            });
+            request.get(`/users/${this.q}/repos`).then((res) => {
               this.userDatas = res.data;
               console.log(res);
               console.log(this.user);
             });
+          },
         },
       }).mount("#app");
     </script>
