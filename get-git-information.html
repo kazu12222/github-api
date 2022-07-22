@@ -10,14 +10,14 @@
       <div class="gitdata">
         <input
           type="text"
-          :value="reposName"
+          :value="user"
           @change="onChange"
           placeholder="User Name"
         />
-        <button @click="search_git">検索</button>
-
-        <ul v-for="userData in userDatas" @change="onChange">
-          <li>{{userData.name}}</li>
+        <ul>
+          <ul v-for="userData in userDatas">
+            <li>{{userData.name}}</li>
+          </ul>
         </ul>
       </div>
     </div>
@@ -31,7 +31,7 @@
         el: "#app",
         name: "GitData",
         props: {
-          reposName: "kazu12222",
+          reposName: String,
         },
         data() {
           return {
@@ -39,24 +39,21 @@
             user: "kazu12222",
           };
         },
-        methods: {
-          search_git: function () {
-            this.user = user;
-            const request = axios.create({
-              baseURL: "https://api.github.com",
+        created() {
+          const request = axios.create({
+            baseURL: "https://api.github.com",
+          });
+          request
+            .get(
+              `/users/${this.user}/repos` // api key は　gitにあげない！.envなどで管理
+            )
+            .then((res) => {
+              this.userDatas = res.data;
+              console.log(res);
+              console.log(this.user);
             });
-            request
-              .get(
-                `/users/${this.user}/repos` // api key は　gitにあげない！.envなどで管理
-              )
-              .then((res) => {
-                this.userDatas = res.data;
-                console.log(res);
-                console.log(this.user);
-              });
-          },
         },
-      });
+      }).mount("#app");
     </script>
   </body>
 </html>
