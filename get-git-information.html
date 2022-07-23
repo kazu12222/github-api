@@ -4,12 +4,21 @@
     <meta charset="UTF-8" />
     <title>vueを使ってaxiosを学ぶ</title>
   </head>
-
+  <style>
+    body {
+      background-color: #99ccff;
+    }
+  </style>
   <body>
     <div id="app">
       <div class="gitdata">
-        <input type="text" v-model="user" placeholder="User Name" />
-        <button @click="search_video">検索</button>
+        <input
+          type="text"
+          v-model="user"
+          placeholder="User Name"
+          class="check"
+        />
+        <button @click="search_video" style="color: red">検索</button>
         <ul v-for="userData in userDatas">
           <li>{{userData.name}}</li>
         </ul>
@@ -24,9 +33,6 @@
       Vue.createApp({
         el: "#app",
         name: "GitData",
-        props: {
-          reposName: String,
-        },
         data() {
           return {
             userDatas: [],
@@ -34,18 +40,6 @@
             q: "",
           };
         },
-        //   created() {
-        //     this.q = this.user;
-        //     const request = axios.create({
-        //       baseURL: "https://api.github.com",
-        //     });
-        //     request.get(`/users/${this.q}/repos`).then((res) => {
-        //       this.userDatas = res.data;
-        //       console.log(res);
-        //       console.log(this.q);
-        //     });
-        //   },
-        // }).mount("#app");
         methods: {
           search_video: function () {
             this.q = this.user;
